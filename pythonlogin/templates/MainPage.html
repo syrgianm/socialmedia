@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style>
+  * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  background-image: url("{{ url_for('static', filename='login_image.png') }}"); 
+}
+
+.topnav {
+  overflow: hidden;
+  background-color:gray;
+  position:sticky;
+  top:0;
+}
+
+
+.topnav a {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #2196F3;
+  color: white;
+}
+.topnav .search-container {
+  float: left;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+.topnav img{
+  float:right;
+  height:50px;
+  width:70px;
+  background-color: white;
+ 
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+
+.Post{
+width: 60%;
+background-color: #333;
+height: auto;
+text-align:center;
+margin-left: 20%;
+color:white;
+border: 1px lightblue solid;
+}
+
+.Post textarea{
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  height:100px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 60%;
+  color:black;
+}
+
+.Post input[type="text"]{
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 60%;
+  color:black
+}
+#Main{
+width: 60%;
+background-color:#333;
+height: auto;
+text-align:center;
+margin-left: 20%;
+color:white;
+margin-top:20px;
+float:left;
+
+}
+ .Comments  {
+width:100%;
+display: block;
+
+float:left;
+}
+.Comment {
+ 
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 20%;
+  color:black;
+  text-align: left;
+  margin-left: 20%;
+  width:60%;
+
+}
+#Main textarea  {
+  border: 2px solid  #333;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin : 10px 10px;
+  color:black;
+  text-align: left;
+  width:60%;
+  
+}
+
+.Likes {
+width:100%;
+height: 10%;
+margin-left:20%;
+float:left;
+}
+
+
+</style>
+</head>
+<body>
+{% block content %}
+<div class="topnav">
+  <a class="active" id="Starter" href="{{ url_for('mainpage') }}">Main</a>
+  <a id="Chat" href="{{ url_for('chathead') }}">Chat</a>
+  <a id="Profile" href="{{ url_for('profile') }}">Profile</a>
+
+  {%if resultisP == None %}
+  <a id="Requests" href="{{ url_for('friendrequests') }}">FriendRequests</a>
+  {%endif%}
+
+  <a id="Log Out" href="{{ url_for('logout') }}">Log Out</a>
+  <img src="{{ url_for('static', filename='logo.png')}}" alt="ImageOfLogo">
+  <div class="search-container">
+    <form action="{{ url_for('search') }}" name="search" method = "POST">
+      <input type="text" placeholder="Search Profile.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+<div class="Post">
+  <form  action= "{{url_for('post')}}" name="MakePost"method="POST">
+    <label for="PhotoUrl"><b>Photo In Url</b></label><br>
+    <a href="https://bbcode0.com/"  target="_blank">Site to upload your image and then copy the link to the form</a><br>
+    <input type="text" placeholder="Photo in url"name="PhotoUrl"> <br>
+    <label for="WritePost"><b>Write Description Of your Post</b></label> <br>
+    <textarea placeholder="Write everything you want" name="WritePost" required></textarea> <br>
+    <button type="submit" class="btn btn-primary" style="width:60%">Upload</button>
+  </form>
+</div>
+
+  
+  {%for row in result %}
+  <div id="Main">
+    <span style = "font-size:20px;">Username:
+      {%if row['Username']!=Username%}
+        <strong><a href = "{{url_for('visitprofile',username=row['Username'])}}" style="margin-top:2px;">{{row["Username"]}}</strong></a>
+      {%else%}
+        <strong><a href = "{{url_for('profile')}}" style="margin-top:2px;">{{row["Username"]}}</strong></a>
+      {%endif%}
+    </span>
+    {%if row['Photo_Video'] == None %}
+    <br>
+    {%else%}
+        <br><img src='{{row["Photo_Video"]}}' alt='ImageOfPost' width= 70% height 300px><br>
+    {%endif%}
+    <span style="color:#aaa;"}>Uploaded:{{row['Date_Time']}}</span><br>
+    <strong>Description:</strong><br>
+    {{row["Description"]}}<br>
+    {% set LikeCounts =  [] %} 
+    {% set LButtonWork =  [] %}
+  
+    {%for likes in resultL %}
+      {%if row["PostID"]==likes["PostID"] %}
+          {% if LikeCounts.append('1') %}{% endif %}
+
+          {%if Username == likes["Likes_Username"] %}
+            {% if LButtonWork.append('1') %}{% endif %}
+          {%endif%}
+      {%endif%}
+    {%endfor%}
+    <span ><strong>Likes:{{ LikeCounts|length }}</strong></span><br>
+    <div class="Likes">
+    {% if LButtonWork|length == 1 %}
+          <form action ='{{url_for("unlike",postid=row["PostID"])}}' display='inline' text-align = 'right' method = 'POST'>
+            <button type='submit' class="btn btn-primary" style="float:left;">Unlike</button></form>
+    {%else%}
+          <form action ='/pythonlogin/like/{{row["PostID"]}}' display='inline' text-align = 'right' method = 'POST'>
+                <button type='submit'   class="btn btn-primary" style="float:left;" >Like</button></form>
+    {%endif%}
+
+    {% if row["Username"]== Username%}
+      <form action ='{{url_for("deletepost",postid=row["PostID"])}}' display='inline' text-align = 'right' method = 'POST'>
+        <button type='submit'    class="btn btn-primary" style="float:left;" >Delete Your Post</button></form>
+    {% endif%}
+    </div>  
+    <br><strong>Comments</strong><br>
+    {%for coms in resultC%}
+      {%if row["PostID"]==coms["PostID"]%}
+            {%if coms["Comment_Username"]!=Username%}
+                <a href="{{url_for('visitprofile',username=coms['Comment_Username'])}}" style="text-align: center; ">{{coms["Comment_Username"]}}</a>
+            {%else%}
+                <a href="{{url_for('profile')}}" style="text-align: center; ">{{coms["Comment_Username"]}}</a>
+            {%endif%}    
+            <br>
+            <div class='Comments'>
+              <div class='Comment'>
+                  {{coms["Text"]}}
+              </div>
+              {% set comLikes =  [] %}
+              {% set LButtonWork = [] %}
+              {%for comL in resultCl %}
+                  {%if comL["CommentID"]==coms["CommentID"] and comL["PostID"]==row["PostID"] %}
+                  {% if comLikes.append('1') %}{% endif %}
+                  {%if Username == comL["Comment_Like_Username"] %}
+                    {% if LButtonWork.append('1') %}{% endif %}
+                  {%endif%}
+              {%endif%}
+            {%endfor%}
+              <span style="float:left; display:inline; margin-left:20%"><strong>CommentLikes:{{comLikes| length }}</strong></span>
+              {% if LButtonWork|length == 1 %}
+                <form action ='{{url_for("unlikecomment",commentid=coms["CommentID"],postid=row["PostID"])}}'  text-align = 'right' method = 'POST'>
+                <button type='submit' class="btn btn-primary btn-xs" style="float:left; ">Unlike</button></form>
+              {% else %}
+                <form action ='{{url_for("likecomment",commentid=coms["CommentID"],postid=row["PostID"])}}'  text-align = 'right' method = 'POST'>
+                <button type='submit' class="btn btn-primary btn-xs" style="float:left; ">Like</button></form>
+              {%endif%}    
+              {% if coms["Comment_Username"]==Username%}
+                <form action ='{{url_for("deletecomment",postid=row["PostID"],commentid=coms["CommentID"])}}'  text-align = 'right' method = 'POST'>
+                  <button type='submit' class="btn btn-primary btn-xs" style="float:left;">Delete Your Comment</button></form>
+              {%endif%}
+            </div>
+      {%endif%}
+    
+    {%endfor%}
+    
+    <form  action='/pythonlogin/comment/{{row["PostID"]}}' method='POST'  style="display: block; width:100%;">
+          <textarea placeholder='Comment' name='Comment' required></textarea><br>
+          <button type='submit' class="btn btn-primary">Comment</button></form>
+    
+  </div>
+  {%endfor%}
+  {%endblock%}
+
+
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+  * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  background-image: url("{{ url_for('static', filename='login_image.png') }}"); 
+}
+
+.topnav {
+  overflow: hidden;
+  background-color:gray;
+  position:sticky;
+  top:0;
+}
+
+
+.topnav a {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #2196F3;
+  color: white;
+}
+.topnav .search-container {
+  float: left;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  float: right;
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+.topnav img{
+  float:right;
+  height:50px;
+  width:70px;
+  background-color: white;
+ 
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+}
+
+#view {
+color:black;
+font-size:30px;   
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a id="Starter" href="{{ url_for('mainpage') }}">Main</a>
+  <a id="Chat" href="{{ url_for('chathead') }}">Chat</a>
+  <a id="Profile" href="{{ url_for('profile') }}">Profile</a>
+  {%if resultisP == None%}
+  <a id="Requests" href="{{ url_for('friendrequests') }}">FriendRequests</a>
+  {%endif%}
+  <a id="Log Out" href="{{ url_for('logout') }}">Log Out</a>
+  <img src="{{ url_for('static', filename='logo.png')}}" alt="ImageOfLogo">
+  <div class="search-container">
+    <form action="{{ url_for('search') }}" name="search" method = "POST">
+      <input type="text" placeholder="Search Profile.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+
+<div id="view">
+    {% block content %}
+    <ul>
+    {% for row in result %}
+        {%if row['Username'] == session['username']%}
+
+        {%else%}
+            <li><a href="/pythonlogin/{{row['Username']}}"><strong>{{row["Username"]}}</strong></a></li><br>
+        
+        {%endif%}
+    {%endfor%}
+    </ul>
+    <form action = "{{url_for('mainpage')}}" method = "GET"><button type="submit" class="btn btn-primary">Go Back</button></form>'
+    {% endblock %}
+</div>
+
+</body>
+</html>

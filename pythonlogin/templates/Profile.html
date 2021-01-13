@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+{% block content %}
+{% if resultisP == None %}
+<script>
+    function  Editfunc() {
+    document.getElementById("ProfTab").innerHTML = "<form action='{{url_for('edit')}}' method = 'Post'>"+
+    "<label for='City'><b>City</b></label>"+
+    "<input type='text' placeholder='City' name='City' required style='color:black;'><br>"+
+    "<label for='Address'><b>Address</b></label>"+
+    "<input type='text' placeholder='Street' name='Street' required style='color:black;'>"+
+    "<input type='number' placeholder='Zip' name = 'Zip' required style='color:black;'><br>"+
+    "<label for='DateOfBirth'><b>DateOfBirth</b></label> "+
+    "<input type='date' value='2018-07-22' placeholder='DateOfBirth' name='DateOfBirth' required style='color:black;'><br>"+
+    "<label for='Education'><b>Education</b></label> "+
+    "<input type='text' placeholder='Enter Education' name='Education' required style='color:black;'><br> "+
+    "<label for='Gender'><b>Status</b></label>"+
+    "<select id='Gender' name='Gender' style='color:black;'> "+
+    "    <option value='Male'>Male</option> "+
+    "    <option value='Female'>Female</option> "+
+    "</select><br> "+
+    "<label for='Job'><b>Job</b></label> "+
+    "<input type='text' placeholder='Enter Job' name='Job' required style='color:black;'><br> "+
+    "<label for='Status'><b>Status</b></label>"+
+    "<select id='Status' name='Status' style='color:black;'> "+
+    "    <option value='Free'>Free</option> "+
+    "    <option value='Married'>Married</option> "+
+    "    <option value='In-Relationship'>In-Relationship</option> "+
+    "    <option value='Widowed'>Widowed</option> "+
+    "</select><br> "+
+    "<label for='FName'><b>FName</b></label> "+
+    "<input type='text' placeholder='Enter First Name' name='FName' required style='color:black;'><br> "+
+    "<label for='SName'><b>SName</b></label> "+
+    "<input type='text' placeholder='Enter Sur Name' name='SName' required style='color:black;'><br> "+
+    "<button type='submit' class='btn btn-primary'>Edit</button>"
+    "</form>";
+    }
+
+
+</script>
+{% else %}
+<script>
+    function  Editfunc() {
+    document.getElementById("ProfTab").innerHTML = "<form action='{{url_for('edit')}}' method = 'Post'>"+
+    "<label for='City'><b>City</b></label>"+
+    "<input type='text' placeholder='City' name='City' required style='color:black;'><br>"+
+    "<label for='Address'><b>Address</b></label>"+
+    "<input type='text' placeholder='Street' name='Street' required style='color:black;'>"+
+    "<input type='number' placeholder='Zip' name = 'Zip' required style='color:black;'><br>"+
+    "<label for='Genre'><b>Genre</b></label>"+
+    "<select id='Genre' name='Genre' style='color:black;'> "+
+    "    <option value='Entertainment'>Entertainment</option> "+
+    "    <option value='Information'>Information</option>"+
+    "    <option value='Group'>Group</option>"+
+    "    <option value='Clothing'>Clothing</option>"+
+    "    <option value=''Electrical'>'Electrical</option>"+
+    "</select><br> "+
+    "<label for='Description'><b>Description</b></label> "+
+    "<input type='text' placeholder='Description' name='Description' required style='color:black;'><br> "+
+    "<label for='PageName'><b>PageName</b></label>"+
+    "<input type='text' placeholder='Enter Page Name' name='PageName' required style='color:black;'><br> "+
+    "<button type='submit' class='btn btn-primary'>Edit</button></form>";
+    }
+</script>
+{% endif %}
+<style>
+*{
+    box-sizing: border-box;
+}
+  
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: white;
+    background-image:url("{{ url_for('static', filename='login_image.png') }}");
+}
+  
+.topnav {
+    overflow: hidden;
+    background-color:gray;
+    position:sticky;
+    top:0;
+}
+  
+  
+.topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+  
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+  
+.topnav a.active {
+    background-color: #2196F3;
+    color: white;
+}
+.topnav .search-container {
+    float: left;
+}
+  
+.topnav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+}
+  
+.topnav .search-container button {
+    float: right;
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+.topnav img{
+    float:right;
+    height:50px;
+    width:70px;
+    background-color: white;
+   
+}
+  
+.topnav .search-container button:hover {
+    background: #ccc;
+}
+  
+
+
+.Prof {
+background-color:#333;
+border: 1px solid lightblue;
+overflow: hidden;
+}
+.Prof span {
+    background-color: inherit;
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    font-size: 25px;
+    width:40%;
+    height:34%; 
+}
+.Prof #ProfTab {
+    background-color: inherit;
+    display:block;
+    margin:0px;
+    width:60%;
+    height:34%;
+    color:white;
+    float: right;
+    text-align:left;    
+}
+.Prof #Informations {
+    color:white;
+}    
+</style>
+
+</head>
+<body>
+
+<div class="topnav">
+  <a  id="Starter" href="{{ url_for('mainpage') }}">Main</a>
+  <a id="Chat" href="{{ url_for('chathead') }}">Chat</a>
+  <a class="active"href="{{ url_for('profile') }}">Profile</a>
+  {%if resultisP == None %}
+  <a id="Requests" href="{{ url_for('friendrequests') }}">FriendRequests</a>
+  {%endif%}
+  <a id="Log Out" href="{{ url_for('logout') }}">Log Out</a>
+  <img src="{{ url_for('static', filename='logo.png')}}" alt="ImageOfLogo">
+  <div class="search-container">
+    <form action="{{ url_for('search') }}" name="search" method = "POST">
+      <input type="text" placeholder="Search Profile.." name="search">
+      <button type="submit"><i class="fa fa-search"></i></button>
+    </form>
+  </div>
+</div>
+<div class="Prof"><span>Username:{{username}}<br> </span>
+   
+    <div id = "ProfTab">
+        <button id="EditProf" onclick= "Editfunc()" class="btn btn-primary">Edit!</button>
+        {% if resultisP == None %}
+        <div id = "Informations"> Personal Profile <br>
+            City:{{resultInfos['City']}} <br>
+            Address: {{resultInfos['Street']}} {{resultInfos['Zip']}} <br>
+            DateOfBirth:{{resultInfos['DateOfBirth']}}<br>
+            Gender:{{resultInfos['Gender']}}<br> 
+            Job:{{resultInfos['Job']}}<br> 
+            Education:{{resultInfos['Education']}}<br> 
+            Status:{{resultInfos['Status']}}<br> 
+            First Name :{{resultInfos['FirstName']}}<br> 
+            Last Name:{{resultInfos['LastName']}}<br> 
+            
+        {%else%}
+        <div id = "Informations"> Page Profile <br>
+            City:{{resultInfos['City']}} <br>
+            Address: {{resultInfos['Street']}} {{resultInfos['Zip']}} <br>
+            Genre: {{resultInfos['Genre']}} <br>
+            Description: {{resultInfos['Description']}} <br>
+            PageName: {{resultInfos['PageName']}}
+        {%endif%}
+        
+        {%endblock%}
+    </div> 
+</div> 
+</body> 
+</html>
